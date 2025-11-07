@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenVerse | 기후·환경·생태 웹 플랫폼</title>
+  <style>
+    :root {
+      --green: #74c69d;
+      --dark-green: #52b788;
+      --light-green: #b7e4c7;
+      --bg: #f6fff8;
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--green), var(--dark-green));
+      color: white;
+      padding: 18px 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: var(--white);
+      box-shadow: 0 2px 6px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav button {
+      flex: 1;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background: var(--light-green);
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px var(--shadow);
+      padding: 20px;
+      margin: 16px 0;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    button.action {
+      background: var(--green);
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button.action:hover {
+      background: var(--dark-green);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>🌱 GreenVerse</header>
+
+  <nav>
+    <button onclick="showPage('home')">홈</button>
+    <button onclick="showPage('challenge')">챌린지</button>
+    <button onclick="showPage('market')">에코마켓</button>
+    <button onclick="showPage('carbon')">탄소계산</button>
+    <button onclick="showPage('edu')">에코교육</button>
+    <button onclick="showPage('rank')">랭킹</button>
+  </nav>
+
+  <main>
+    <section id="home" class="active">
+      <h2>🌿 환영합니다, GreenVerse에 오신 것을!</h2>
+      <p>기후, 환경, 생태를 지키면서 돈도 벌 수 있는 지속 가능한 생태 플랫폼이에요.</p>
+      <div class="card">
+        <h3>1️⃣ 친환경 챌린지 참여</h3>
+        <p>매일 주어지는 미션을 수행하고 포인트를 적립하세요.</p>
+      </div>
+      <div class="card">
+        <h3>2️⃣ 재활용 에코마켓</h3>
+        <p>중고 물품을 거래하거나 재활용품을 팔아 수익을 얻어요.</p>
+      </div>
+      <div class="card">
+        <h3>3️⃣ 탄소발자국 계산기</h3>
+        <p>내 생활 속 탄소 배출량을 계산하고 줄이는 방법을 알아보세요.</p>
+      </div>
+      <div class="card">
+        <h3>4️⃣ 환경교육 콘텐츠</h3>
+        <p>환경 관련 온라인 강의로 지속가능한 삶을 배워요.</p>
+      </div>
+    </section>
+
+    <section id="challenge">
+      <h2>🌱 오늘의 친환경 챌린지</h2>
+      <div class="card">
+        <p>오늘의 미션: 플라스틱 컵 대신 텀블러 사용하기</p>
+        <button class="action" onclick="completeChallenge()">완료하기</button>
+      </div>
+    </section>
+
+    <section id="market">
+      <h2>♻️ 재활용 에코마켓</h2>
+      <div class="card">
+        <p>판매할 재활용품 이름을 입력하세요.</p>
+        <input type="text" id="recycleName" placeholder="예: 유리병 3개" />
+        <button class="action" onclick="addRecycle()">등록하기</button>
+      </div>
+      <div id="recycleList"></div>
+    </section>
+
+    <section id="carbon">
+      <h2>🌍 탄소발자국 계산기</h2>
+      <div class="card">
+        <p>하루 차량 이용 거리 (km)</p>
+        <input type="number" id="distance" placeholder="예: 10" />
+        <button class="action" onclick="calculateCarbon()">계산하기</button>
+      </div>
+      <div id="carbonResult"></div>
+    </section>
+
+    <section id="edu">
+      <h2>📘 환경교육 콘텐츠</h2>
+      <div class="card">
+        <h3>💧 물 절약의 중요성</h3>
+        <p>작은 습관 하나가 큰 변화를 만들어요.</p>
+      </div>
+      <div class="card">
+        <h3>🌳 도시 속 작은 숲</h3>
+        <p>도심 속 녹지 공간의 가치와 역할을 알아보세요.</p>
+      </div>
+    </section>
+
+    <section id="rank">
+      <h2>🏆 친환경 랭킹</h2>
+      <div id="rankList"></div>
+    </section>
+  </main>
+
+  <footer>© 2025 GreenVerse. All rights reserved.</footer>
+
+  <script>
+    // 🌿 페이지 전환
+    function showPage(pageId) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // 🌱 사용자 데이터
+    let userData = JSON.parse(localStorage.getItem('greenverse_user')) || {
+      name: '채은',
+      points: 0,
+    };
+
+    function updateHeader() {
+      document.querySelector('header').textContent = `🌱 GreenVerse - ${userData.name} (${userData.points}P)`;
+    }
+    updateHeader();
+
+    // ✅ 챌린지 완료
+    function completeChallenge() {
+      alert("미션 완료! 포인트 +10 적립 🌿");
+      userData.points += 10;
+      localStorage.setItem('greenverse_user', JSON.stringify(userData));
+      updateHeader();
+      renderRank();
+    }
+
+    // ♻️ 재활용 아이템 등록
+    function addRecycle() {
+      const name = document.getElementById("recycleName").value.trim();
+      if (!name) return alert("이름을 입력하세요!");
+      const div = document.createElement("div");
+      div.className = "card";
+      div.textContent = `등록 완료: ${name}`;
+      document.getElementById("recycleList").appendChild(div);
+      document.getElementById("recycleName").value = "";
+    }
+
+    // 🌍 탄소 계산
+    function calculateCarbon() {
+      const km = parseFloat(document.getElementById("distance").value);
+      if (isNaN(km) || km < 0) return alert("올바른 거리를 입력하세요!");
+      const emission = km * 0.12; // km당 0.12kg CO2
+      document.getElementById("carbonResult").innerHTML = `
+        <div class="card">
+          당신의 하루 탄소 배출량은 약 <strong>${emission.toFixed(2)}kg CO₂</strong> 입니다.
+        </div>`;
+    }
+
+    // 🏆 랭킹
+    const leaderboard = [
+      { name: "민서", points: 120 },
+      { name: "하준", points: 90 },
+      { name: "서연", points: 70 },
+    ];
+
+    function renderRank() {
+      const rankList = document.getElementById("rankList");
+      rankList.innerHTML = "";
+      const merged = [...leaderboard, userData];
+      merged.sort((a, b) => b.points - a.points);
+      merged.forEach((user, i) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<strong>${i + 1}위</strong> ${user.name} - ${user.points}P`;
+        rankList.appendChild(div);
+      });
+    }
+    renderRank();
+  </script>
+</body>
+</html>
